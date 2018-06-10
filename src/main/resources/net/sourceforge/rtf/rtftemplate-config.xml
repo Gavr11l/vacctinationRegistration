@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- 
+	@author : Angelo ZERR
+	@date : 01/02/2007
+	@description : it's spring configuration to manage 
+				   the template engine used by RTFTemplate.
+				   If you want you can add it your class
+				   template engine here which must implements
+				   the interface
+				   net.sourceforge.rtf.template.ITemplateEngine	
+ --> 
+<beans>
+
+	<!-- **********************************************************************
+  	   ********************* RTFTEMPLTE IMPLEMENTATION  *********************
+  	   ********************************************************************** --> 
+  	   
+	<!-- Defautlt RTFTemplate implementation  with freemarker template engine  --> 
+	<bean id="ftlRTFTemplate" 
+			class="net.sourceforge.rtf.RTFTemplate" 
+			scope="prototype" >
+		<property name="parser" ref="defaultRTFParser" />      
+		<property name="transformer" ref="ftlTransformer" />           		 		    			
+		<property name="templateEngine" ref="ftl" />           		
+	</bean>
+
+	<!-- Defautlt RTFTemplate implementation with velocity template engine  --> 
+	<bean id="vmRTFTemplate" 
+			class="net.sourceforge.rtf.RTFTemplate" 
+			scope="prototype" >			
+		<property name="parser" ref="defaultRTFParser" />   
+		<property name="transformer" ref="vmTransformer" />           		 
+		<property name="templateEngine" ref="vm" />           		
+	</bean>
+
+  <!-- **********************************************************************
+  	   *********************    RTFDOCUMENT PARSER      *********************
+	   ********************************************************************** --> 	
+
+	<!-- Defautlt RTFDocument Parser  --> 
+	<bean id="defaultRTFParser" 
+			class="net.sourceforge.rtf.handler.RTFDocumentHandler" 
+			>         		 
+	</bean>  	   
+	
+	
+  <!-- **********************************************************************
+  	   ********************* FREEMARKER TEMPLATE ENGINE *********************
+  	   ********************************************************************** --> 
+  	
+  <!-- Freemarker template engine  --> 
+  <bean id="ftl" 
+  		class="net.sourceforge.rtf.template.freemarker.FreemarkerTemplateEngineImpl"   		
+  		scope="prototype" >
+	 <property name="freemarkerConfiguration" ref="ftlConfiguration" />           
+  </bean>
+
+  <!-- Freemarker Configuration  --> 
+  <bean id="ftlConfiguration" 
+  		class="freemarker.template.Configuration" 
+  		>   
+  </bean>
+
+  <!-- Freemarker RTF Document Transformer  --> 
+  <bean id="ftlTransformer" 
+  		class="net.sourceforge.rtf.template.freemarker.RTFFreemarkerTransformerImpl" 
+  		>   
+  </bean>  
+    
+  <!-- **********************************************************************
+  	   *********************  VELOCITY TEMPLATE ENGINE  *********************
+  	   ********************************************************************** -->   
+  
+  <bean id="vm" 
+  		class="net.sourceforge.rtf.template.velocity.VelocityTemplateEngineImpl"
+  		scope="prototype" >
+	 <property name="velocityEngine" ref="vmEngine" />       
+  </bean>
+  
+  <!-- VelocityEngine Configuration  --> 
+  <bean id="vmEngine" 
+  		class="org.apache.velocity.app.VelocityEngine" 
+  		>   
+  </bean>    
+    
+  <!-- Velocity RTF Document Transformer  --> 
+  <bean id="vmTransformer" 
+  		class="net.sourceforge.rtf.template.velocity.RTFVelocityTransformerImpl" 
+  		>   
+  </bean>      
+  
+</beans>
